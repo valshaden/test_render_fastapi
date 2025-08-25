@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Распознавание визиток</title>
+    <meta charset="utf-8">
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .upload-area { border: 2px dashed #ccc; padding: 40px; text-align: center; margin: 20px 0; }
+        .upload-area:hover { border-color: #999; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .result { margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+        .loading { display: none; color: #666; }
+    </style>
+</head>
+<body>
+    <h1>Распознавание визиток</h1>
+    
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" accept="image/*" style="display: none">
+        <p>Нажмите для выбора изображения визитки</p>
+    </div>
+    
+    <button onclick="extractInfo()">Извлечь информацию</button>
+    <button onclick="recognizeText()">Распознать текст</button>
+    
+    <div class="loading" id="loading">Обработка...</div>
+    <div class="result" id="result"></div>
+
+    <script>
+        let selectedFile = null;
+        
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                document.querySelector('.upload-area p').textContent = `Выбран файл: ${selectedFile.name}`;
+            }
+        });
+        
+        async function extractInfo() {
+            if (!selectedFile) {
+                alert('Выберите файл');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+            
+            try {
+                const response = await fetch('/extract', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<h3>Извлеченная информация:</h3><pre>${JSON.stringify(JSON.parse(data.extracted_data), null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<h3>Ошибка:</h3><p>${error.message}</p>`;
+            }
+            
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        async function recognizeText() {
+            if (!selectedFile) {
+                alert('Выберите файл');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+            
+            try {
+                const response = await fetch('/recognize', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<h3>Распознанный текст:</h3><p>${data.text}</p>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<h3>Ошибка:</h3><p>${error.message}</p>`;
+            }
+            
+            document.getElementById('loading').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
