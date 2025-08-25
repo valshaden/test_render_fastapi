@@ -16,5 +16,33 @@
     "email": "68428@gmail.com",
     "address": "117393, г. Москва, ул. Гарибалди, д. 28, к. 1",
     "description": ""
+  },
+  {
+    "name": "СБИТНЕВА Инна Александровна",
+    "phones": [
+      "8-916-376-78-89"
+    ],
+    "email": "",
+    "address": "г. Москва, 7-я Парковая ул., д. 10, 1 этаж, каб. 106",
+    "description": ""
+  },
+  {
+    "name": "",
+    "phones": [
+      "8 800 000 00"
+    ],
+    "email": "mail@company.ru",
+    "address": "улица Московская, дом 13",
+    "description": ""
+  },
+  {
+    "name": "SPEEDCARS",
+    "phones": [
+      "+7 (495) 545-48",
+      "+7 (925) 506-25"
+    ],
+    "email": "info@speedcars.ru",
+    "address": "125195, г. Москва, Ленинградское шоссе, 53А",
+    "description": "Тюнинг Ателье \"SPEEDCARS\""
   }
 ]
